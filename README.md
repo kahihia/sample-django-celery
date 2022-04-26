@@ -1,1 +1,1 @@
-# sample-django-Ccelery
+# sample-django-celery
