@@ -11,7 +11,7 @@
 
 <br />
 
-## âœ¨ How to use it
+> How to use it
 
 
 1. Download Redis
@@ -55,6 +55,7 @@ pip freeze > requirements.txt
 
 4. Update Django settings.py:
 
+````
 INSTALLED_APPS = [
     
 	'django.contrib.admin',
@@ -83,10 +84,10 @@ INSTALLED_APPS = [
 	
 	'django_celery_tracker',  # Our main app for the task creation
 ]
-
+````
 
 #Update CELERY_SETTINGS
-
+````
 CELERY_BROKER_URL = 'redis://localhost:6379'
 
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
@@ -98,9 +99,11 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = TIME_ZONE
+````
 
 5. Create celery.py to setup Celery app: Navigate to project config module (where settings and urls modules are) and create a celery.py file with the contents:
 
+````python
 from __future__ import absolute_import, unicode_literals
 import os
 
@@ -121,9 +124,11 @@ app.conf.beat_schedule = {
 }
 
 app.autodiscover_tasks()
+````
 
 6. Create tasks.py in your Django main app ("django_celery_tracker") :
 
+````python
 from __future__ import absolute_import, unicode_literals
 
 from celery import shared_task
@@ -141,9 +146,10 @@ def text_task(self, text):
         logger.info("BadHeaderError")
     except Exception as e:
         logger.error(e)
+````
 
 7. Create views.py to invoke task when text is submited from form.
-
+````python
 class TextFormView(FormView):
     form_class = TextFormModelForm
     template_name = "celery_tracker/timeline_dashboard.html"
@@ -164,6 +170,7 @@ class TextFormView(FormView):
         text_task.delay(
             text
         )
+````
 
 We use .delay() to tell Celery to add the task to the queue.
 
@@ -171,7 +178,7 @@ We got back a successful AsyncResult — that task is now waiting in Redis for a
 text_task.delay() (should see `<AsyncResult: c6ef74b9-4c03-402a-b1db-9e2adbf52f75>`)
 
 8. Create django_celery_tracker/signals.py.  We use celery signals to log tasks status and activities. 
-
+````python
 from celery.signals import before_task_publish, task_prerun, task_postrun
 
 
@@ -207,10 +214,11 @@ def task_postrun_handler(sender=None, task_id=None, state=None, **kwargs):
     else:
         t.post_state = 'PREMATURE_SHUTDOWN'
     t.save(update_fields=['completed', 'post_state'])
+````
 
 9. In models.py, give the following
 
-		
+````python		
 class CeleryTask(models.Model):
     task_id = models.CharField(max_length=64, db_index=True, unique=True)
     task_name = models.CharField(max_length=512)
@@ -224,7 +232,7 @@ class CeleryTask(models.Model):
 
     def __str__(self):
         return "id=%s, name=%s" % (self.task_id, self.task_name)
-
+````
 
 10. Run migrations: python manage.py makemigrations and python manage.py migrate
 		
