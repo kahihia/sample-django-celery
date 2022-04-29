@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content-section">
+    <p class="border-bottom pb-4">Are you sure, You want to delete your account?<br>You cannot recover your account once it has been deleted.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,7 @@
+{% autoescape off %}
+Hi {{ user.username }},
+
+Please click on the link below to confirm your registration:
+
+http://{{ domain }}{% url 'account_api:api-account-verify' uidb64=uid token=token redirect_link=redirect_link %}
+{% endautoescape %}

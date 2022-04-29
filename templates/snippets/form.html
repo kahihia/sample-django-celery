@@ -1,0 +1,32 @@
+<!-- Base form style start -->
+{% csrf_token %}
+{% for error in form.non_field.errors %}
+<small class="text-danger">{{ error }}</small>
+{% endfor %}
+{% for field in form.hidden_fields %}
+{{ field }}
+{% for error in field.errors %}
+<small class="text-danger">{{ error }}</small>
+{% endfor %}
+{% endfor %}
+{% for field in form.visible_fields %}
+<div class="form-element">
+{% if field.field.widget.input_type != "file" %}
+{% if field.field.widget.input_type != "checkbox" %}
+<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+{{ field }}
+{% else %}
+{{ field }}
+<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+{% endif %}
+{% if field.help_text %}
+<div class="ml-2 mb-0"><small>{{ field.help_text }}</small></div>
+{% endif %}
+{% for error in field.errors %}
+<small class="text-danger">{{ error }}</small>
+{% endfor %}
+{% endif %}
+</div>
+{% endfor %}
+<hr class="mt-1 mb-2">
+<!-- Base form style end -->

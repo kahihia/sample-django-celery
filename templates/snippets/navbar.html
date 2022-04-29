@@ -1,0 +1,167 @@
+<!-- Navbar Start -->
+
+<style>
+.navbar {
+    padding: .25rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-primary);
+    color: var(--font-color);
+}
+
+.brand-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    padding: .25rem;
+}
+
+.brand-title a {
+    text-decoration: none;
+    color: var(--font-color);
+    display: block;
+}
+
+.navbar-links {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-links ul {
+    display: flex;
+    margin: .25rem 0;
+}
+
+.navbar-links li {
+    list-style: none;
+	border-radius: 2px;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: var(--font-color);
+    padding: .5rem 1rem;
+    display: block;
+}
+
+.navbar-links li:hover {
+    background-color: var(--bg-secondary);
+}
+
+.toggle-button {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+}
+
+.toggle-button .bar {
+    height: 4px;
+    width: 100%;
+    background-color: var(--font-color);
+    border-radius: 5px;
+}
+
+.nav-input {
+    width: 200px;
+}
+
+@media (max-width: 720px) {
+    .toggle-button {
+        display: flex;
+    }
+
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-links ul {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .navbar-links li {
+        text-align: center;
+    }
+
+    .navbar-links li a {
+        padding: .5rem 1rem;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+
+    .nav-input {
+        margin: .5rem 0;
+    }
+}
+
+</style>
+<nav class="navbar">
+    <div class="brand-title"><a href="{% url 'celery_tracker:celery_tracker' %}">LOGO</a></div>
+    <a href="#" class="toggle-button">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </a>
+    <div class="navbar-links">
+        <ul>
+            <li><a href="#" id="toggle-theme">Dark Mode</a></li>
+            <form class="d-flex mx-2" onsubmit="return executeQuery();">
+                <input class="nav-input" type="text" placeholder="Search" name="userQuery" id="id_search">
+            </form>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'account:account' user_id=request.user.id %}">Profile</a></li>
+            <li><a href="{% url 'account:logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'account:login' %}">Login</a></li>
+            <li><a href="{% url 'account:register' %}">Register</a></li> 
+            {% endif %}  
+        </ul>
+    </div>
+</nav>
+
+<script type="text/javascript">
+    function executeQuery() {
+        var query = ""
+        query = document.getElementById('id_search').value;
+        window.location.replace("{% url 'account:account-search' %}?userQuery=" + query)
+        return false
+    }
+</script>
+
+<script>
+    const toggleBtn = document.getElementsByClassName("toggle-button")[0]
+    const navbarLinks = document.getElementsByClassName("navbar-links")[0]
+
+    toggleBtn.addEventListener("click", () => {
+        navbarLinks.classList.toggle("active")
+    })
+</script>
+
+<script>
+    document.getElementById("toggle-theme").addEventListener("click", function(e) {
+        const theme = localStorage.getItem("theme-mode")
+        console.log(theme)
+        if (theme === null) {
+            localStorage.setItem("theme-mode", "dark")
+            window.location.reload()    
+        } else {
+            localStorage.removeItem("theme-mode")
+            window.location.reload()
+        }
+    })
+</script>
+<!-- Navbar Ends -->

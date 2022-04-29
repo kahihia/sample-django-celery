@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .user-card {
+        width: 300px;
+        padding: 2rem 2rem;
+        background-color: var(--bg-primary);
+        border-radius: .25rem;
+        box-shadow: 1px 1px .25rem #888;
+    }
+    .user-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    img {
+        width: 100px;
+        height: 100px;
+    }
+</style>
+
+{% if users %}
+<div class="user-container">
+    {% for user in users %}
+    <div class="d-flex flex-column align-items-center user-card mx-2 mb-2">
+        <img class="rounded-circle" src="{{ user.display_pic.url }}">
+        <div class="d-flex flex-column align-items-center mt-4 mb-2">
+            <span>{{ user.username }}</span>
+            <span>{{ user.name }}</span>
+        </div>
+        <a class="btn btn-primary" href="{% url 'account:account' user_id=user.id %}">View Profile</a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <p>No user found...</p>
+</div>
+{% endif %}
+{% endblock content %}

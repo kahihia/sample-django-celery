@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-section">
+    {% if form %}
+    <form method="POST">
+        <legend class="border-bottom mb-4">Login</legend>
+        {% csrf_token %}
+        {% include 'snippets/form.html' %}
+        <!-- <div class="g-recaptcha mt-1 mb-2" data-sitekey={{ GOOGLE_RECAPTCHA_SITE_KEY }}></div> -->
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Login</button>
+            <small class="text-muted ml-2">
+                <a href="{% url 'account:password-reset' %}">Forget password</a>
+            </small>
+        </div>
+    </form>
+    <div class="border-top pt-1">
+        <small class="text-muted">
+            Need an account? <a href="{% url 'account:register' %}">Sign Up Now</a>
+        </small>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function changeCaptchaTheme() {
+        const theme = localStorage.getItem("theme-mode")
+        if (theme !== null) {
+            if (theme === 'dark') {
+                document.getElementsByClassName("g-recaptcha")[0].setAttribute("data-theme", "dark")
+            }
+        }
+    }
+    changeCaptchaTheme()
+</script>
+{% endblock content %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}Django Celery Tracker{% endblock %}
+
+{% block branding %}
+  <h1>Django Celery Tracker</h1>
+{% endblock %}
+
+{% block extrahead %}
+  
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<h2>Text Form</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit Text">
+        </form>
+		</div>
+
+<div id="dashboard">
+  <div class="center">
+    <div id="placeholder">
+      Select a task for more details
+    </div>
+	<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Text input</th>
+      <th>UUID</th>
+      <th>Status</th>
+      <th>created</th>
+      <th>Started</th>
+      <th>Completed</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for task in celery_track %}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+         <div class="ms-3">
+            <p class="fw-bold mb-1">{{task.args}}</p>
+          </div>
+        </div>
+      </td>
+      <td>
+        <p class="fw-normal mb-1">{{task.task_id}}</p>
+      </td>
+      <td>
+	  {% if task.post_state == 'SUCCESS' %}
+        <span class="badge rounded-pill bg-success">{{task.post_state}}</span>
+	 {% else %}
+	 <span class="badge rounded-pill bg-primary">{{task.post_state}}</span>
+		{% endif %}
+      </td>
+      <td>{{task.created}}</td>
+      <td>{{task.started}}</td>
+      <td>{{task.completed}}</td>
+      <td>
+        <button type="button" class="badge rounded-pill bg-light text-dark">
+          <a href="/admin/django_celery_tracker/celerytask/{{task.id}}">Edit</a>
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+   </div>
+</div>
+{% endblock %}

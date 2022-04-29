@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content-section">
+    <p class="border-bottom pb-4">Are you sure, You want to deactivate your account?<br> Your account gets reactivated once you login.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Deactivate</button>
+    </form>
+</div>
+{% endblock content %}
