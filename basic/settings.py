@@ -94,7 +94,7 @@ print(dj_database_url.config(  conn_max_age=600    ))
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.config( default='postgresql://postgres:postgres@localhost:5432/basic',        conn_max_age=600    )}
-DATABASES[default]['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
