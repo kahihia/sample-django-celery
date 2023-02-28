@@ -93,8 +93,8 @@ print(dj_database_url.config(  conn_max_age=600    ))
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
-    'default': dj_database_url.config( default='postgresql://postgres:postgres@localhost:5432/basic',        conn_max_age=600    )}
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+    'default': dj_database_url.config( default='postgres://main:uw3rLkV6DxNKFvBlpeXd6XvRWPmjeZMz@dpg-cfv4ib53t39doao8tfj0-a/main_p9os',       conn_max_age=600    )}
+#DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
