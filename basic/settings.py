@@ -89,11 +89,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'basic.wsgi.application'
 
-
+print(dj_database_url.config(  conn_max_age=600    ))
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
-        'default': dj_database_url.config(  default='postgresql://postgres:postgres@localhost:5432/basic',        conn_max_age=600    )}
+        'default': dj_database_url.config( conn_max_age=600    )}
 
 
 # Password validation
